@@ -1,0 +1,240 @@
+<!DOCTYPE HTML> 
+<html> 
+<head> 
+	<style>
+		.noma
+			{
+				position: relative;
+				width: 400px;
+				top: 70px;
+				left: 400px;
+				border: 0px;	
+			}
+	</style>
+
+	<script type="text/javascript">
+		//FUNCTION TO ADD AND FILL CELLS
+			function addRow()
+				{ 
+				  var c = parseInt(document.getElementById('yoyo').value);   //treats value as an integer
+				  if (isNaN (c))   //checking the value 
+				  return;
+		
+				 for(var r = 0; r < parseInt(c, 10); r++)
+					{
+						var x = document.getElementById('tbl').insertRow(0);
+						var y = x.insertCell(0);
+						x.cells[0].setAttribute('name' , 'badstudent'); //giving created cells attribute
+						y.innerHTML = "Cell-" +r;  //cell data, optional
+					}
+					 fill();
+				}
+				
+		//FUNCTION TO FILL ROWS	
+			function fill()
+			    	{		
+						var student = document.getElementsByName('badstudent');
+						for (var i=0; i<student.length; i++)
+						{
+							var chars = "0123456789";
+							var string_length = 2;
+							var fills = '';
+							for (var j=0; j<string_length; j++)
+							{
+								var rnum = Math.floor(Math.random() * chars.length);
+								fills += chars.substring(rnum,rnum+1);
+							}
+							student[i].innerHTML = fills;						
+						}
+		        	}
+		//FUNCTION TO SORT
+		function bubblesort() 
+			{
+				var n1 = document.getElementById('tbl').rows.length;
+				var row1 = document.getElementById("row1");
+				var row2 = document.getElementById("row2");
+				for(var i=0; i<n1;i++)
+				{
+					var n2 = document.getElementById('tbl').rows[i].cells.length;
+					for(var j=0; j<n2;j++)
+					{
+						var x=document.getElementById('tbl').rows[i].cells.item(j).innerHTML;
+						var cell = row1.insertCell(i);
+						cell.setAttribute("width", "50px");
+						cell.innerHTML = x;
+						cell = row2.insertCell(i); //cell=row2.insertCell(i).innerHTML;
+						cell.setAttribute("width", "50px");
+						cell.innerHTML = x;
+					}
+				}
+				var index = 1, index2 = 1, len = row2.cells.length;
+				//sortOnce(row2, index, index2, len, -1);
+			}
+			
+				var i = 0;
+				var index = 1;
+				var swap = false;
+				var max = 0;
+			
+			var str = "Pass1:> ";
+			var pass = 1;
+			
+			/*
+					var newContent = document.getElementById("wah");
+					newContent.innerHTML = newContent.innerHTML +str+ "<br />";
+					str = "Pass"+index+":> ";*/
+				
+			function sortOnce()
+			{
+				var row2 = document.getElementById("row2");
+				var leng = row2.cells.length
+				if(pass < leng)
+				{
+					if(i < 4)
+					{
+						i++;
+					}
+					else
+					{
+						i = 1;
+						if(index < leng - 1)
+						{
+							index++;
+						}
+						else
+						{
+							index = 1;
+							var newContent = document.getElementById("wah");
+							newContent.innerHTML = newContent.innerHTML +str+max+ "<br />";
+							pass++;
+							str = "Pass"+pass+":> ";
+						}
+					}
+					step(row2);
+				}
+				else
+				{
+					alert("Your Sorting is Done");
+				}
+					
+			}
+			
+			function step(row)
+			{				
+				document.getElementById('steps').innerHTML = "Step"+i;
+				switch(i)
+				{
+					case 1:
+					{
+						temp1 = row.cells[index-1].innerHTML;
+						temp2 = row.cells[index].innerHTML; 
+						row.cells[index-1].style.background = 'lightgreen';
+						row.cells[index].style.background = 'lightgreen';
+						var num1 = parseInt(temp1);
+						var num2 = parseInt(temp2);
+						if(num1>num2)
+						{
+							swap = true;
+							str = str + temp2+" : ";
+							max = temp1;
+						}
+						else
+						{
+							swap = false;
+							str = str + temp1+" : ";
+							max = temp2;
+						}
+						break;
+					}
+					case 2:
+					{
+						if(swap == true)
+						{
+							//alert("Swap");
+							var trow1 = document.getElementById("row");
+							trow1.cells[0].innerHTML = temp2;
+							row.cells[index].innerHTML = '';
+						}
+						else
+						{	
+							//alert("No Swap");
+						}
+						break;
+					}
+					case 3:
+					{
+						if(swap == true)
+						{
+							//alert("Swap");
+							row.cells[index].innerHTML = row.cells[index-1].innerHTML;
+							row.cells[index-1].innerHTML ='';
+						}
+						else
+						{	
+							//alert("No Swap");
+						}
+						break;
+					}
+					case 4:
+					{
+						if(swap == true)
+						{
+							//alert("Swap");
+							var trow1 = document.getElementById("row");
+							row.cells[index-1].innerHTML = trow1.cells[0].innerHTML;
+							trow1.cells[0].innerHTML = '';
+						}
+						else
+						{	
+							//alert("No Swap");
+						}
+						
+						row.cells[index-1].style.background = '';
+						row.cells[index].style.background = '';
+						break;
+					}
+					
+				}
+			}
+			
+	</script>
+</head>
+<body>
+ <center><H1>Bubble Sort Demonstration<H2>By: IS/46/13</center>
+	<div class="noma">
+		<div align="left">
+			How Many Numbers? <br />
+			<input type="text" id="yoyo" maxlength="12" size="12"><br /><br />
+			<input type="button" onclick="addRow()" value="Submitt" />
+			<input type="button" onclick="document.location.reload()" value="Reset" /><br /><br />
+			<input type="button" onclick="bubblesort() " value="List to Sort" /><br /><br />
+			<input type="button" onclick="sortOnce()" value="Manual Sort" />
+			
+			
+		</div>
+	</div>
+	<center>
+		<table id="tbl" border="1" bordercolor="black" cellspacing="2" cellpadding="10" width="50" height="50" margin-top="0">
+				<tr id="rw">
+					<td name='badstudent' >Hello!</td>
+				</tr>
+		</table><br />
+		<table border='0' id="myTable">
+			<tr id="row1" style="background-color:skyblue"></tr>
+		</table>
+		
+		<div style="position:absolute; top: 20%;right:0; min-width: 300px; ">
+			<p id="steps"></p>
+			<table border='0' width="50" height="50">
+				<tr id="row">
+					<td></td>
+				</tr>
+			</table>
+			<table border='0' >
+				<tr id="row2" style="background-color:lightgray"></tr>
+			</table>
+			<p id="wah"></p>
+		</div>	
+	</center>
+</body>
+</
